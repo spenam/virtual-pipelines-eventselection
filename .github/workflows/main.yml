@@ -25,6 +25,10 @@ jobs:
           COMPILER=$(root-config --cxx)
           FLAGS=$(root-config --cflags --libs)
           $COMPILER -g -o3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
+      - uses: actions/upload-artifact@v2
+        with:
+          name: skim${{ matrix.version }}
+          path: skim
           
   skim:
     needs: build_skim
@@ -33,6 +37,8 @@ jobs:
     steps:
       - name: checkout repository
         uses: actions/checkout@v2
-
+      - uses: action/download-artifact@v2
+        with:
+          name: skim${{ matrix.version }}
       - name: skim
         run: ./skim
