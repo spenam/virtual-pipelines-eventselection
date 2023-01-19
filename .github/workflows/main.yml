@@ -7,9 +7,13 @@ jobs:
       - run: echo hello world
   build_skim:
     runs-on: ubuntu-latest
+    container: rootproject/root:6.22.06-conda
     steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
       - name: build
         run: |
           COMPILER=$(root-config --cxx)
-          $COMPILER -g -o3 -Wall -Wextra -Wpendantic -o skim.cxx
+          FLAGS=$(root-config --cflags --libs)
+          $COMPILER -g -o3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 
